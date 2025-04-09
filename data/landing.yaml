@@ -43,101 +43,20 @@ featureGrid:
   weight: 20
   template: feature grid
 
-  title: Why choose Lotus Docs?
-  subtitle: Lotus Docs is a highly configurable Hugo documentation theme. Yet, with the default configuration you can deploy and publish your documentation site in a matter of minutes. Check out some core features below.
+  title: The Purpose of Docs
+  subtitle: FPGA 개발자는 많은 삽질을 경험합니다. 이 글을 보는 엔지니어는 저와 같은 수고를 덜 하기 바라는 마음, 그리고 개인 공부 및 기록용으로 이 문서를 작성합니다. 
 
   items:
-    - title: Fast
+    - title: Level
       icon: speed
-      description: 4 x 100's score on Google Lighthouse by default. Lotus Docs removes unused CSS, prefetches asset links, and lazy loads content images.
+      description: 1년차 신입 엔지니어도 이해할 수 있는 쉬운 글을 작성하는 것이 목표입니다. 모든 게시물은 Hands-On-Tutorial 형식으로 게시될 예정입니다. 단순히 따라하면서 지식을 배워가세요!
 
-    - title: SEO Friendly
-      icon: trending_up
-      description: Data is automatically structured to be SEO friendly. Includes Meta tags, Opengraph, and Twitter cards. Choose the settings that best suit you.
-
-    - title: Secure by default
-      icon: lock
-      description: Lotus Docs' default configuration scores A+ on Mozilla Observatory. You can update the default Security Headers to suit your requirements.
-
-    - title: Optional Features
-      icon: settings
-      description: Many Lotus Docs features are configurable via optional parameters. Require DocSearch for your site? Then enable it via a single setting.
-
-    - title: Deploy to Vercel
-      icon: change_history
-      description: Deploy to Vercel in seconds. Vercel Functions, Vercel Redirects/Rewrites, and Vercel Headers are all configurable for an enriched experience.
-
-    - title: Dark Mode
-      icon: dark_mode
-      description: "Prefer not to be blasted by the sun while reading? Switch to a low-light UI with the click of a button. Modify colour variables to match your branding."
-
-    - title: Search by DocSearch
+    - title: Topic
       icon: search
-      description: Search your docs with DocSearch. A powerful, efficient and accessible search solution built on Algolia Crawler & Autocomplete.
+      description: 디지털 신호 처리 알고리즘(모뎀)을 FPGA 제품으로 개발하는 과정에 필요한 모든 지식을 다루고자 합니다.
 
-    - title: Multilingual Support
+    - title: Comment
       icon: translate
-      description: Lotus Docs supports Hugo's Multilingual Mode. Create documentation in multiple languages side by side with i18n support.
+      description: 모든 게시물은 한국어로 작성됩니다. 영어 버전도 같이 제공하는 것이 제 목표입니다. 앞으로 10년동안 이 블로그에 게시될 많은 기술 스택을 기다려 주세요 😄 
 
-    - title: Bootstrap v5
-      icon: palette
-      description: Built on Bootstrap 5, Lotus Docs allows for a familiar, flexible, and intuitive developer experience. Easily customise your site via SCSS variables and files.
 
-# Image compare
-imageCompare:
-  enable: true
-  weight: 30
-  template: image compare
-
-  title: Customise The Lotus Docs Appearance
-  subtitle: Much of Lotus Docs' appearance can be customised. Dark mode is optional (enabled by default) and you can choose a Google font that suites you via the config parameters.
-
-  items:
-    - title: Dark Mode
-      config: {
-        startingPoint: 50,
-        addCircle: true,
-        addCircleBlur: false,
-        showLabels: true,
-        labelOptions: {
-          before: 'Dark',
-          after: 'Light',
-          onHover: false
-        }
-      }
-      imagePath: "images/screenshots"
-      imageBefore: "lotusdocs_dark_v0.8.webp"
-      imageAfter: "lotusdocs_light_v0.8.webp"
-
-    - title: Custom Fonts
-      config: {
-        controlColor: "#3C4257",
-        startingPoint: 25,
-        addCircle: true,
-        addCircleBlur: false,
-        showLabels: true,
-        labelOptions: {
-          before: 'Inter',
-          after: 'Life Saver',
-          onHover: false
-        }
-      }
-      imagePath: "images/screenshots"
-      imageBefore: "lotusdocs_google_font_demo_inter_screenshot.webp"
-      imageAfter: "lotusdocs_google_font_demo_lifesavers_screenshot.webp"
-
-    - title: Accent Color
-      config: {
-        startingPoint: 25,
-        addCircle: true,
-        addCircleBlur: true,
-        showLabels: true,
-        labelOptions: {
-          before: 'Blue',
-          after: 'Cardinal',
-          onHover: false
-        }
-      }
-      imagePath: "images/screenshots"
-      imageBefore: "lotusdocs_blue_theme_colour.webp"
-      imageAfter: "lotusdocs_cardinal_theme_colour.webp"

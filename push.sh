@@ -1,9 +1,9 @@
 hugo -t lotusdocs
 cd public
 git add .
-git commit -m"v6"
+git commit -m"250410_ver"
 git push origin main
 cd ..
 git add .
-git commit -m"v6"
+git commit -m"250410_ver"
 git push origin master
