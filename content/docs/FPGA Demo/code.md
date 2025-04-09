@@ -1,5 +1,5 @@
 ---
-title: "Code"
+title: "AXI4-Lite LED Demo"
 description: ""
 icon: "code"
 date: "2023-05-22T00:44:31+01:00"
@@ -11,21 +11,14 @@ weight: 210
 
 {{% alert context="warning" text="The front matter `description` value for this page has been intentionally left empty in order to demonstrate FlexSearch's suggested results fallback behaviour." /%}}
 
-## Code Block Examples
+## 모듈 설명  
+Rounding 방법에 대해 기술하고 Verilog HDL로 구현한 과정 및 모듈 사용법을 기술한다.
 
-Code block language examples
+## Rounding Method
 
-### Go
+1. Truncate : 해당 비트를 단순히 잘라 버리는 것  
 
-```go
-package main
-
-import "fmt"
-
-func main() {
-    fmt.Println("hello world")
-}
-```
+2. Rounding to Even : ladsjf;ksdljf
 
 ### HTML
 

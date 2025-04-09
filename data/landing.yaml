@@ -12,11 +12,6 @@ hero:
       desktop: "gradient-desktop.webp"
       mobile: "gradient-mobile.webp"
 
-  badge:
-    text: v0.1.0
-    color: primary # primary, secondary, success, danger, warning, info, light, dark
-    pill: false # boolean
-    soft: true # boolean
 
   # titleLogo:
   #   path: "images/logos"
@@ -24,8 +19,8 @@ hero:
   #   alt: "Lotus Docs Logo"
   #   height: 80px
 
-  title: "Lotus Docs"
-  subtitle: A lightweight, **modern documentation** theme for Hugo. Easily customised for building **fast**, **secure**, and **SEO-friendly** documentation sites.
+  title: "🍳 egghwan"
+  subtitle: I'm an engineer with a deep interest in signal processing, RTL design, and ASIC/FPGA development.
 
   image:
     path: "images" # path to image under configured assets directory. default 'images'
@@ -38,10 +33,7 @@ hero:
     icon: rocket_launch
     btnText: "Get Started"
     url: "/docs"
-  cta2Button:
-    icon: construction
-    btnText: "In Development"
-    url: "https://github.com/colinwilson/lotusdocs"
+
 
   info: "**Open Source** MIT Licensed."
 

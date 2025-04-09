@@ -1,6 +1,6 @@
 ---
 weight: 220
-title: "Mermaid"
+title: "Zynq z7-10 Petalinux Build Demo"
 description: "Example Mermaid diagrams"
 icon: "function"
 date: "2023-09-08T05:12:51+01:00"

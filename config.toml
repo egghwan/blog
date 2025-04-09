@@ -14,5 +14,6 @@ baseURL = "https://egghwan.github.io"
     titleIcon = true
     navDesc = false
     descriptions = false
+    lastMod = true
   
     
