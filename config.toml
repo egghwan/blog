@@ -1,3 +1,4 @@
+baseURL = "https://egghwan.github.io/docs"
 [module]
   [module.hugoVersion]
     extended = true
