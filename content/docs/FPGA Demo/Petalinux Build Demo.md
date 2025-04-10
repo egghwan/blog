@@ -12,13 +12,19 @@ weight: 210
 {{% alert context="warning" text="The front matter `description` value for this page has been intentionally left empty in order to demonstrate FlexSearch's suggested results fallback behaviour." /%}}
 
 ## 1. 데모 설명
-Zybo Z7-10 FPGA 보드에서 Petalinux를 빌드하는 방법을 기술한다. 본 문서는 Zybo z7-10 보드를 기준으로 설명된 문서지만, 다른 Xilinx FPGA 보드에도 적용 가능하다.
+Zybo Z7-10 FPGA 보드에서 Petalinux를 빌드하는 방법을 기술한다. 
+
+본 문서는 Zybo z7-10 보드를 기준으로 설명된 문서지만, 다른 Xilinx FPGA 보드에도 적용 가능하다.
 
 ## 2. What is Petalinux?
-Petalinux란 Vivado FPGA에 포팅 가능한 운영체제를 뜻한다. 운영체제 안에는 커널, 쉘, 네트워크 등등 다양한 디바이스 드라이버가 미리 구현되어 있기 때문에 개발 시간을 단축할 수 있다. 이와 반대로 Vivado에서 제공하는 Vitis 환경이 있는데 이는 운영체제가 없는 Baremetal 환경이다. Baremetal은 부팅 속도가 빠르고 단순하지만 주변 장치를 FPGA와 연동할 때에는 디바이스 드라이버를 따로 구현해야 하는 단점이 있다. 만약 FPGA에 연결되는 주변 장치가 없다면 Baremetal 환경으로 검증하는 것도 좋은 방법이다. Petalinux를 FPGA에 Build한다는 뜻은 컴퓨터에 윈도우를 설치하는 것처럼 FPGA에 리눅스를 설치하는 것이다.
+Petalinux란 Vivado FPGA에 포팅 가능한 운영체제를 뜻한다. 운영체제 안에는 커널, 쉘, 네트워크 등등 다양한 디바이스 드라이버가 미리 구현되어 있기 때문에 개발 시간을 단축할 수 있다. 또한 운영체제가 자원을 효과적으로 관리 가능하다.
+
+ 이와 반대로 Vivado에서 제공하는 Vitis 환경이 있는데 이는 운영체제가 없는 Baremetal 환경이다. Baremetal은 부팅 속도가 빠르고 단순하지만 주변 장치를 FPGA와 연동할 때에는 디바이스 드라이버를 따로 구현해야 하는 단점이 있다.
+ 
+  만약 FPGA에 연결되는 주변 장치가 없다면 Baremetal 환경으로 검증하는 것도 좋은 방법이다. Petalinux를 FPGA에 Build한다는 뜻은 FPGA에 리눅스를 설치하는 것이다. 컴퓨터에 윈도우를 설치하는 것과 같다.
 
 ## 3. Demo
-Petalinux를 Build하기 위한 Demo다. 3.1 항목 부터 차례대로 따라서 진행하면 된다. 이하 모든 과정은 WSL 환경에서 실행한다. 3번 과정이 모두 끝나면 FPGA에서 Petalinux가 빌드된다. 숫자로 인덱싱된 과정들을 놓치지 말고 차근차근 따라해보자.
+Petalinux를 Build하기 위한 Demo다. 3.1 항목 부터 차례대로 따라서 진행하면 된다. 이하 모든 과정은 [WSL](/docs/terms/wsl)  환경에서 실행한다. 3번 과정이 모두 끝나면 FPGA에서 Petalinux가 빌드된다. 숫자로 인덱싱된 과정들을 놓치지 말고 차근차근 따라해보자.
 &nbsp;  
 ### 3.1 WSL 환경 셋업  
 
@@ -56,7 +62,11 @@ https://docs.amd.com/r/en-US/ug1144-petalinux-tools-reference-guide/Navigating-C
 
 ### 3.3 BSP 파일 (직접 만들기 or 구하기)
 
-Petalinux 빌드를 위해서는 bsp파일이 필요하다. 다행히 Xilinx에서 제공하는 EVM 보드는 미리 Petalinux가 빌드된 bsp 파일을 공식 사이트에서 배포한다. Zybo-z7-10의 경우는 Digilent 홈페이지에서 bsp 파일을 배포한다. 만약 미리 빌드된 bsp파일을 구하지 못한다면 petalinux 구성 설정을 통해 직접 bsp파일을 만들어야 한다. (아직 bsp 파일을 만드는 방법은 몰라서 추후 업데이트)
+Petalinux 빌드를 위해서는 bsp파일이 필요하다. 다행히 Xilinx에서 제공하는 EVM 보드는 미리 Petalinux가 빌드된 bsp 파일을 공식 사이트에서 배포한다.
+
+ Zybo-z7-10의 경우는 Digilent 홈페이지에서 bsp 파일을 배포한다. 
+ 
+ 만약 미리 빌드된 bsp파일을 구하지 못한다면 petalinux 구성 설정을 통해 직접 bsp파일을 만들어야 한다. (아직 bsp 파일을 직접 만드는 방법은 몰라서 추후 업데이트)
 
 1. https://digilent.com/reference/programmable-logic/zybo-z7/demos/petalinux 로 들어간다.  
 
@@ -247,11 +257,12 @@ FPGA에서 Petalinux를 부팅시키는 과정은 SD 카드를 통해서 진행�
 이제 FPGA에서 Petalinux를 부팅만 하면 된다. 부팅 방법은 간단하다.
 1. 3.7에서 만든 SD카드를 FPGA SD 카드 슬롯에 꽂기
 
-2. Zybo-z7-10을 SD카드 부팅 모드로 설정하기 (아래 그림 참고)
+2. Zybo-z7-10을 SD카드 부팅 모드로 설정하기 (아래 그림 참고). 파란색 고무 마개를 빨간색 네모 처럼 꼽으면 된다.
 
     ![Internal link preview tooltip](/images/content/z7_10_sd_boot.jpg)
 
-    보드를 위와 같이 구성한다. 파란색 고무 마개를 빨간색 네모 처럼 꼽으면 된다.
+    만약 다른 EVM 보드라면 SD카드 부팅 모드를 스위치로 설정하기도 한다. 보드에 맞게 SD카드 부팅 설정 방법을 적용해야 한다.
+
 
 3. 컴퓨터와 FPGA 이더넷 포트를 랜선으로 연결하기
 4. 컴퓨터의 설정 -> 네트워크 및 인터넷 -> 이더넷 ->IPv4 주소를 192.168.255.xxx로 설정한다. 이때 IPv4 주소는 3.5항목의 7번 과정에서 설정한 IP의 3번째 구역까지 같아야하고 마지막 구역은 달라야 한다.
