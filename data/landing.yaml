@@ -44,7 +44,7 @@ featureGrid:
   template: feature grid
 
   title: The Purpose of Docs
-  subtitle: FPGA 개발자는 많은 삽질을 경험합니다. 이 글을 보는 엔지니어는 저와 같은 수고를 덜 하기 바라는 마음, 그리고 개인 공부 및 기록용으로 이 문서를 작성합니다. 
+  subtitle: FPGA 개발자는 많은 삽질을 경험합니다. 제 블로그를 방문 하시는 모든 분이 저와 같은 수고를 덜 하기 바라는 마음, 그리고 개인 공부 및 기록용으로 이 문서를 작성합니다. 
 
   items:
     - title: Level

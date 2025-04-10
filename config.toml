@@ -17,5 +17,7 @@ baseURL = "https://egghwan.github.io"
     descriptions = false
     lastMod = true
     prismTheme = "solarized-light"
+    intLinkTooltip = true
     [params.footer]
       copyright = "© 2025 egghwan. All contents protected"
+ 
