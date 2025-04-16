@@ -16,7 +16,7 @@ AXI4-LITE 프로토콜을 활용하여 FPGA의 PS-PL간 인터페이스 연결�
 
 보드는 Zybo-Z7-10 보드를 활용하지만 다른 보드에도 응용 가능하다.
 
-해당 데모를 수행하기 위해 FPGA에 Petalinux가 빌드되어 있어야 한다. ([Petalinux 빌드 참고 링크)](/docs/fpga-demo/petalinux_build_demo)
+해당 데모를 수행하기 위해 FPGA에 Petalinux가 빌드되어 있어야 한다. ([Petalinux 빌드 참고 링크)](https://egghwan.github.io/docs/fpga-demo/petalinux_build_demo/)
 
 Petalinux가 없다면 Vitis를 활용해 해당 데모를 재현할 수 있다.
 
