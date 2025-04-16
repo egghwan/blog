@@ -24,7 +24,9 @@ Petalinux란 Vivado FPGA에 포팅 가능한 운영체제를 뜻한다. 운영�
   만약 FPGA에 연결되는 주변 장치가 없다면 Baremetal 환경으로 검증하는 것도 좋은 방법이다. Petalinux를 FPGA에 Build한다는 뜻은 FPGA에 리눅스를 설치하는 것이다. 컴퓨터에 윈도우를 설치하는 것과 같다.
 
 ## 3. Demo
-Petalinux를 Build하기 위한 Demo다. 3.1 항목 부터 차례대로 따라서 진행하면 된다. 이하 모든 과정은 [WSL](/docs/terms/wsl)  환경에서 실행한다. 3번 과정이 모두 끝나면 FPGA에서 Petalinux가 빌드된다. 숫자로 인덱싱된 과정들을 놓치지 말고 차근차근 따라해보자.
+Petalinux를 Build하기 위한 Demo다. 3.1 항목 부터 차례대로 따라서 진행하면 된다. 이하 모든 과정은 [WSL](/docs/terms/wsl)  환경에서 실행한다. 3번 과정이 모두 끝나면 FPGA에서 Petalinux가 빌드된다. 
+
+1. <=  왼쪽 이모티콘으로 인덱스된 과정을 놓치지 말고 차근차근 따라해보자.
 &nbsp;  
 ### 3.1 WSL 환경 셋업  
 

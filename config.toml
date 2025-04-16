@@ -20,4 +20,14 @@ baseURL = "https://egghwan.github.io"
     intLinkTooltip = true
     [params.footer]
       copyright = "© 2025 egghwan. All contents protected"
- 
+[markup]
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = false
+    hl_Lines = ""
+    lineNoStart = 1
+    lineNos = true
+    lineNumbersInTable = true
+    noClasses = true  # ⬅️ 꼭 false로! 그래야 테마 CSS가 적용됨
+    style = "dracula"     # ⬅️ 스타일 후보: "nord", "dracula", "monokai", "solarized-dark"
+    tabWidth = 4
