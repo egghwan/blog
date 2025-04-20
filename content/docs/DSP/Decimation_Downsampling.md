@@ -32,7 +32,7 @@ Decimation과 down-sampling의 차이는 LPF를 수행하냐 안 하냐의 차�
 
 2. 남이 사용하는 신호 : 중심 주파수가 400Hz이고 대역폭이 143.75Hz인 대역 신호
 
-3. 수신 신호 : 내가 사용하는 신호 + 남이 사용하는 신호 &nbsp; (노이즈는 없다고 가정하자)
+3. 수신 신호 : 내가 사용하는 신호 + 남이 사용하는 신호 &nbsp; (노이즈는 없다고 가정하자, 남의 신호를 노이즈라고 가정해도 된다.)
 
 4. 샘플링 클럭 : 1kHz
 
@@ -54,7 +54,7 @@ Decimation과 down-sampling의 차이는 LPF를 수행하냐 안 하냐의 차�
 
 파란색 신호는 내가 만든 신호고, 빨간색 신호는 남이 만든 신호다. 발열을 낮추기 위해 수신 신호를 절반의 샘플링 클럭인 500Hz로 down-sampling을 해보자.
 
-아래 스펙트럼은 수신 신호의 샘플을 2개 간격으로 선택하여 샘플링 클럭을 500MHz로 낮춘 신호다.
+아래 스펙트럼은 시간 축에서 수신 신호의 샘플을 2개 간격으로 선택하여 샘플링 클럭을 500MHz로 낮춘 신호다.
 
 ![Internal link preview tooltip](/images/content/decimation/rx_sig_downsample_1.png)  
 
@@ -65,6 +65,9 @@ Decimation과 down-sampling의 차이는 LPF를 수행하냐 안 하냐의 차�
 400Mhz 신호는 250MHz기준 오른쪽으로 150Mhz 떨어져 있기 때문에 250MHz를 기준으로 왼쪽으로 150MHz만큼 떨어진 100MHz에 Aliasing이 일어난다.
 
 결과적으로 down-sampling 이전에는 신호들이 서로 분리되어 간섭을 주지 않았지만, down-sampling 이후에는 신호들이 서로 간섭한다.
+
+&nbsp; 
+
 
 ### 4.2 Low-Pass-Filtering의 필요성
 
@@ -85,6 +88,8 @@ LPF를 거친 이후에, 신호를 2개 샘플 간격으로 선택하는 down-sa
 ![Internal link preview tooltip](/images/content/decimation/deci_sig_1.png) 
 
 그림에서 알 수 있듯이, 단순히 down-sampling을 진행했을 때보다. Decimation(LPF + down-sampling)을 진행했을 때, 내 신호에 대한 간섭이 줄어 들었음을 확인할 수 있다.
+
+
 &nbsp;
 
 ### 4.3 MATLAB CODE
@@ -187,19 +192,28 @@ legend('내 신호', '남의 신호');
 
 
 ```
-해당 예제를 모델링한 MATLAB 코드다. 
+해당 예제를 모델링 한 MATLAB 코드다. 
 
-- 18 ~ 31 Line : 내 신호와, 남의 신호를 대역 신호로 만드는 과정이다. (해당 과정을 만드는 방법은 추후 포스팅)
+- 18 ~ 31 Line : 내 신호와, 남의 신호를 대역 신호로 만드는 과정이다. (대역 신호를 만드는 방법은 추후 포스팅)
 
 - 34 ~ 36 Line : 수신 신호 스펙트럼 모델링
 
 - 49 ~ 63 Line : Down-sampling 한 스펙트럼 모델링
 
 - 66 ~ 95 Line : Decimation (LPF + downsampling) 한 수신 신호 모델링
-### 5. 결론
+
+&nbsp; 
+
+
+### 4.4 신호처리 관점 결론
 
 Decimation이란 Low-Pass-Filtering을 수행한 뒤 down-sampling을 하는 것을 의미한다.
 
 현업에서 설계를 할 때 모뎀 신호를 down-sampling을 한다고 표현하면 큰일난다. 내 신호가 간섭되어 엉망이 되어도 상관 없다는 말을 하는 것과 같기 때문이다.
 
 따라서 신호를 Decimation 한다는 표현을 꼭 사용하자. 아니면 Low Pass Filtering을 거친 후 down-sampling을 진행 한다고 말하는게 정확한 표현이다.
+
+&nbsp; 
+
+
+### 5 구현 관점
