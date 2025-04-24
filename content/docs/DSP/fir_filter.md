@@ -122,18 +122,46 @@ FIR Filter란 이상적으로 무한개의 계수를 갖는 필터를 구현을 
 
 ## 4. 구현 관점
 
-이제 Fir Filter를 RTL로 구현해보자.
+이제 Fir Filter를 RTL로 구현해보자. 단순 RTL 구현이 아니라 FPGA에 최적화된 RTL 구조를 알아보자.
 
 &nbsp;
 
-### 4.1 Even-Symmetric Fir Filter
+### 4.1 SRL (Shift-Register-Lookup Table)
+Xilinx FPGA는 SRL(Shift-Register-Lookup table)이 존재한다. SRL이 뭘까? 아래 그림을 살펴보자.
 
-Fir Filter의 계수가 짝수개 이고, 계수가 대칭 구조를 이루고 있는 Fir Filter다.
+![Internal link preview tooltip](/images/content/fir_filter/srl.png)  
 
+SRL은 FPGA를 설계할 때 shift-register를 활용하여 지연 로직을 만들때 유용하다.
 
+일반적으로 shift-register는 플립플롭(F/F)을 활용하여 만드는데, SRL을 활용하면 LUT만으로 shift-register 구현이 가능하다.
 
+예를 들어 Xilix FPGA는 SRLC32E SRL로직이 있고, 이는 32clk의 딜레이를 갖는 Shift-Register다. 같은 기능을 구현하기 위해서 F/F 32개가 필요한데, F/F이 SRL 대비 로직면에서 크다. 따라서 SRL을 활용하면 면적 및 전력에서 이점을 갖는다.
 
+Fir-Filter 구현을 위해서는 데이터의 지연 로직이 필수적인데, 이 지연 로직을 SRL을 활용해 구현하면 FPGA상에서 최적화할 수 있다.
 
+### 4.2 DSP
+Xilinx FPGA에서는 MAC(Multiply-Accumulate) 연산에 최적화된 DSP 로직이 존재한다. 구조는 아래와 같다.
 
+&nbsp;
+
+![Internal link preview tooltip](/images/content/fir_filter/dsp.png)  
+
+먼저 Input하나를 지연 시킨뒤, 다음 데이터와 서로 덧셈 연산을 수행한다. 그 다음 덧셈 결과를 다른 데이터와 곱셈을 수행한다. 그 다음 곱셈결과를 누적하여 더한다.
+
+위 구조는 FPGA에서 DSP 1개의 로직을 사용하여 구현된다. 그리고 매우 빠른 덧셈, 곱셈 연산을 지원하기 때문에 Timing 관점에서 이득을 볼 수 있다.
+
+&nbsp;
+
+### 4.3 Even Symmetric Fir Filter
+
+Even-Symmetric Fir Filter는 필터의 계수가 짝수개이고, 계수가 좌우 대칭 형태를 이루는 Fir Filter다.
+
+예를 들어 필터 계수가 3,2,1,1,2,3 이라면 필터 계수가 6개고, 좌우 대칭형태를 띈다. 이러한 경우를 Even-Symmetric하다 라고 표현한다. 이제 RTL 블록 다이어그램을 살펴보자.
+
+아래 블록다이어그램은 필터의 계수의 길이가 4이고 Even-Symmetric한 Fir Filter의 블록 다이어그램 구조다.
+
+![Internal link preview tooltip](/images/content/fir_filter/Even-Sym.png)
+
+이해를 위해서 Clock 별로 데이터가 이동하는 것을 그려보자.
 
 
