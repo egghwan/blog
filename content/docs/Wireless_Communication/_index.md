@@ -1,6 +1,6 @@
 ---
 weight: 1130
-title: "Theme Options"
+title: "Wireless Communications"
 description: "Optional features in Lotus Docs."
 icon: tune
 lead: ""
