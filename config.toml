@@ -31,3 +31,4 @@ baseURL = "https://egghwan.github.io"
     noClasses = true  # ⬅️ 꼭 false로! 그래야 테마 CSS가 적용됨
     style = "dracula"     # ⬅️ 스타일 후보: "nord", "dracula", "monokai", "solarized-dark"
     tabWidth = 0
+
