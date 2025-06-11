@@ -1,6 +1,6 @@
 ---
 weight: 1135
-title: "3.6 Pulse Shaping Filter"
+title: "3.06 Pulse Shaping Filter"
 icon: keyboard_double_arrow_right
 description: "How to configure Breadcrumb navigation for your Lotus Docs site."
 date: 2022-11-27T07:08:15+00:00
