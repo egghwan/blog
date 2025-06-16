@@ -230,5 +230,342 @@ Phase Error Detector, Loop Filter, NCO를 자세히 그려서 최종 PLL 블록 
 
 ### 4.6 PLL 디자인
 
-PLL을 구현하기 위해서 가장 먼저 결정해야 할 것은 루프 필터다. 루프 필터의 PI필터가 곧 PLL의 수렴 성능 및 속도를 결정하기 때문이다.
+PLL의 성능을 결정짓는 가장 중요한 파라미터를 2가지를 소개한다.
 
+첫 번째는 Dampling factor $\zeta$ 다. 이게 뭔지 알아보자.
+
+쉽게 설명하기 위해 테니스 공을 땅에 떨어뜨리는 상상을 해보자. 공은 바닥에 부딪혀 다시 튀어오르고 점차 감쇠되는 진동을 보이다 결국 평형을 이룬다.
+
+PLL역시 처음 위상 획득 과정에서 초기에는 테니스공 처럼 진동하다가 점차 평형 상태로 수렴하게 된다.
+
+이 때 Damping factor $\zeta$는 감쇠비를 의미한다. Damping factor가 크면 감쇠 진동은 줄어들지만 수렴 시간이 길어진다.
+
+반대로 Damping factor가 작다면 수렴 시간이 빠르지만 감쇠 진동이 발생한다. 아래 그림을 통해 Damping factor에 따른 진동 정도를 살펴보자.
+
+![Internal link preview tooltip](/images/content/PLL/pic12.png)
+
+Damping factor가 1보다 작을 때 PLL응답은 과도한 상승(oversrhoot)과 과도한 하강(undershoot) 형태의 감쇠 진동을 보인다. 이러한 경우 underdamped 상태라고 한다.
+
+Damping factor가 1보다 클 경우 PLL응답은 진동성 반응이 사라지게 된다. 이러한 경우 overdamped(과감쇠) 상태라고 한다.
+
+Damping factor가 정확히 1일 경우 PLL응답은 underdamped와 overdamped 사이의 중간 상태 정도로 진동한다. 이러한 경우 critically damped(임계 감쇠) 상태라고 부른다.
+
+두 번째는 Natural frequency $w_n$이다.
+
+우리가 PLL을 사용하는 목적은 입력되는 파형의 위상과 주파수를 추적하기 위함이다. 통신 모뎀의 경우 수신 신호가 무선 채널 환경에 의해 왜곡됐을때 이 오차를 추적하기 위함이다.
+
+그러나 이러한 입력 신호는 잡음에 오염되어 있기 때문에 정확한 수신 신호의 복구를 위해 잡음을 제거해야 한다. 그리고 이를 PLL이 수행한다.
+
+따라서 PLL은 신호를 통과시키고 잡음은 제거시키는 필터와 비슷하게 동작한다. 아래 그림을 살펴보자.
+
+![Internal link preview tooltip](/images/content/PLL/pic13.png)
+
+위 그래프는 Proportional+Integrator 형태의 루프 필터를 갖는 PLL의 주파수 응답이다. 위 그림을 통해 PLL이 저역통과(LPF) 필터임을 알 수 있다.
+
+잘 살펴보면 주파수 응답이 0에서 $w_n$까지는 거의 평탄한 응답을 보인다. 이 뜻은 PLL의 입력 신호의 위상 오차의 변화가 $w_n$이하일 경우, PLL은 오차를 잘 추적해 수렴할 수 있음을 의미한다.
+
+그러나 위 그림에서 같은 $w_n$이라도 Damping factor에 따라 Passband의 영역이 달라진다. 따라서 우리는 더 나은 PLL의 Passband 대역정의가 필요하다.
+
+이를 위해 등가 잡음 대역폭(Equivalent noise BW) $B_n$이라는 개념을 사용한다.
+
+이 뜻은 주파수 응답 곡선의 아래 면적과 동일한 면적을 갖는 이상적인 벽돌 필터의 대역을 의미한다. 아래 그램을 참고해보자.
+
+![Internal link preview tooltip](/images/content/PLL/pic14.png)
+
+파란색 주파수 응답은 PLL의 주파수 응답이다. 이때 파란색 곡선 아래의 면적과 동일한 면적의 벽돌 필터가 보인다. 이 때 $B_n$은 벽돌 필터의 대역폭을 의미한다.
+
+내용이 어려워 생략하겠지만, 등가 잡음 대역폭 $B_n$과 Natural Frequency $w_n$과 Damping Factor $\zeta$의 관계식을 아래와 같이 나타낼 수 있다.
+
+$$B_n = \frac{\omega_n}{2} \left(1 + \frac{1}{4\zeta}\right)$$
+
+등가 잡음 대역폭 $B_n$은 Loop Bandwidth라고도 불린다.
+
+자 이제 PLL을 설계할 준비가 끝났다. PLL을 설계하기 위해서는 Damping Factor와 Loop Bandwidth를 먼저 고려해야 한다.
+
+먼저 Damping Factor에 대해 적절한 값을 찾아보자.
+
+앞서 말했듯이, Damping Factor가 크면 감쇠 진동이 작지만 수렴 시간이 길어지고, Damping Factor가 작으면 감쇠 진동이 크지만 수렴 시간이 짧아진다.
+
+이러한 trade-off 관계에서 좋은 균형을 이루는 Damping Factor 값으로 0.707이 많이 사용된다.
+
+그 다음은 Loop bandwidth에 대해 적절한 값을 찾아보자.
+
+좁은 Loop bandwidth를 선택하면 대부분의 잡음을 효과적으로 걸러낼 수 있지만 빠른 위상 변화를 추적할 수는 없다.
+
+반면 넓은 Loop bandwidth를 선택하면 빠른 위상 변화를 잘 추적할 수 있지만, 더 많은 잡음이 루프를 통해 들어올 수 있다.
+
+대부분의 수신기에서는 입력 신호 SymbolRate의 약 1%정도인 값이 $B_n$의 좋은 시작점 값이다.
+
+그 다음은 루프 상수 $K_0$, $K_D$, $K_p$, $K_i$를 결정해야 한다.
+
+![Internal link preview tooltip](/images/content/PLL/pic15.png)
+
+위 그림은 PLL 이득을 결정하는 순서를 나타낸 그림이다.
+
+먼저 Phase Error Detector Gain $K_D$를 결정한다.
+
+그 다음 PLL Input 신호가 갖는 SampleRate의 a%만큼을 루프 대역폭으로 설정한다.
+
+마지막으로 루프 필터 Gain $K_P$와 $K_i$를 설정한다.
+
+$K_P$와 $K_i$를 설정하기 위해 먼저 Normalized natural frequency $\theta_n$을 정의해보자.
+
+$$ \theta_n = w_n \frac{T_S}{2}$$
+
+위 식에 루프 대역폭 $B_n$의 식을 대입하면 아래와 같이 다시 쓸 수 있다.
+
+$$ \theta_n = \frac{B_nT_S}{\zeta+\frac{1}{4\zeta}}$$
+
+위 식을 바탕으로 $K_P$와 $K_i$의 식을 유도할 수 있다. 유도과정은 생략한다.
+
+$$K_P = \frac{1}{K_DK_0}\frac{4\zeta\theta_n}{1+2\zeta\theta_n+\theta^2}$$
+
+$$K_i = \frac{1}{K_DK_0}\frac{4\theta_n^2}{1+2\zeta\theta_n+\theta^2}$$
+
+하지만 디지털 통신 시스템에서 PLL의 루프 대역폭은 일반적으로 샘플링 속도 $f_s$를 기준으로 정의된다. 그러나 나중의 동기화 알고리즘에서 사용되기 위해서는 심볼률 $f_M$이 더 적절한 파라미터다.
+
+이 때 심볼 당 샘플수 $L$인 디지털 신호에 대해 PLL의 $K_P$와 $K_i$값은 아래와 같이 달라진다.
+
+$$K_P = \frac{1}{K_DK_0}\frac{4\zeta\frac{\theta_n}{L}}{1+2\zeta\frac{\theta_n}{L}+(\frac{\theta}{L})^2}$$
+
+$$K_i = \frac{1}{K_DK_0}\frac{4(\frac{\theta_n}{L})^2}{1+2\zeta\frac{\theta_n}{L}+(\frac{\theta}{L})^2}$$
+
+수식만으로는 PLL을 완벽하게 이해하는 데 어려울 수 있어서 간단한 예제를 살펴보자.
+
+![Internal link preview tooltip](/images/content/PLL/pic16.png)
+
+PLL의 입력 신호 $r[n]$이 있다고 해보자. PLL의 최종 출력$s[n]$은 결국 $r[n]$과 같아지는 것이다.
+
+$$r[n] = Acos(2 \pi \frac{1}{15}n + \theta[n])$$
+
+그리고 $\theta_n$이 서서히 변한다고 가정해보자. 그렇다면 PLL은 입력 신호의 위상 오차를 계산하여 보정한다.
+
+NCO의 출력은 I/Q 신호로 구성된 복소수 신호다. 만약 입력 신호가 복소수면 I/Q신호를 전부 사용하고, 실수 신호면 Q신호만 사용해 보정한다.
+
+$$s_I[n] = cos(2 \pi \frac{k}{N}n + \hat{\theta}[n])$$
+$$s_Q[n] = -sin(2 \pi \frac{k}{N}n + \hat{\theta}[n])$$
+
+그 다음은 Phase Error Detector에서 일어나는 일을 살펴보자.
+
+그림을 잘 살펴보면 Phase Error Detector에서 NCO의 출력의 Q신호가 PLL의 입력신호와 곱해짐을 알 수 있다.
+
+그 이유는 위상 오차는 비선형 입력신호에 숨어 있기 때문에 Q신호를 곱함으로써 위상 오차를 계산할 수 있기 때문이다. 아래 식을 통해 자세히 살펴보자.
+
+$$e_D[n] = -sin(2 \pi \frac{k}{N}n + \hat{\theta}[n]) Acos(2 \pi \frac{1}{15}n + \theta[n])$$
+
+삼각함수 변환 공식에 의해 위 식의 우변은 아래와 같이 변형될 수 있다.
+
+$$e_D[n] = \frac{A}{2}sin(\theta[n]-\hat{\theta}[n]) - \frac{A}{2}sin(2 \pi \frac{2k}{N}n+\theta[n]+\hat{\theta}[n])$$
+
+여기서 $\frac{A}{2}sin(2 \pi \frac{2k}{N}n+\theta[n]+\hat{\theta}[n])$는 주파수가 2배인 항이다.
+
+PLL은 루프 대역폭 $B_n$을 갖는 저역통과 필터로 동작하기 때문에 주파수가 2배인 항은 필터링 되어 사라지게 된다. 따라서 Phase Error Detector의 출력 $e_D[n]$은 아래와 같이 쓸 수 있다.
+
+$$e_D[n] = \frac{A}{2}sin\theta_e[n]$$
+
+따라서 위 PLL의 S-Curve는 Sin인 것을 알 수 있다. S-curve에 대한 그림을 아래처럼 나타낼 수 있다.
+
+![Internal link preview tooltip](/images/content/PLL/pic17.png)
+
+만약 위상 오차가 매우 작다면 $sin\theta_e[n] = \theta_e[n]$을 만족하므로
+
+$$e_D[n] = \frac{A}{2}\theta_e[n]$$을 만족한다.
+
+위 식에서 우리는 Phase Error Detector의 Gain을 구할 수 있다. 
+
+$$K_D = \frac{A}{2}$$
+
+위에서 Phase Error Detector의 Gain은 PLL 입력신호의 진폭 $A$에 의해 결정된다. 만약 입력 신호의 레벨이 변해 진폭이 바뀐다면 $K_D$값 역시 불안정해져
+
+PLL에서 설계된 노이즈 대역폭과 Damping Factor에 맞게 동작하지 않을 수 있다.
+
+따라서 수신기에서는 AGC를 활용해 입력 신호의 레벨을 일정하게 맞추어 안정적인 PLL 동작을 보장해야 한다.
+
+예제의 간단화를 위해 입력 신호의 진폭 $A$는 항상 1로 고정되어 있다고 가정해보자.
+
+그럼 Phase Error Detector는 0.5가 된다.
+
+그 다음은 Damping Factor를 결정할 차례다. PLL의 수렴속도와 안정성의 trade-off관계에서 일반적으로 좋은 시작점은 0.707이다.
+
+$$ \zeta = 0.707 $$
+
+그 다음은 PLL의 노이즈(루프)대역폭 $B_n$을 결정할 차례다. 일반적으로 PLL 입력 신호 SampleRate의 5%가 좋은 시작점이다.
+
+$$B_nTs = 0.05 $$
+
+이제 PLL 루프 필터의 Gain $K_P$와 $K_i$를 결정해보자. 위에서 살펴보았던 식에 Damping Factor와 노이즈 대역폭 값을 대입하면 아래와 같다.
+
+$$K_P = 0.2667 $$
+$$K_i = 0.0178 $$
+
+이렇게 설계된 PLL에서 각 단계별로 신호가 어떻게 바뀌는지 살펴보자.
+
+먼저 Phase Error Detector의 출력을 살펴보자.
+
+![Internal link preview tooltip](/images/content/PLL/pic18.png)
+
+그림에서 알 수 있듯이 Phase Error Detector의 출력 $e_D[n]$는 파란색 신호에 해당한다. 그리고 빨간색 신호는 위상 오차 $\theta_e[n]$을 나타낸다.
+
+시간이 지날수록 위상 오차 $\theta_e[n]$이 0이 되어 출력 위상이 안정화 되는 것을 볼 수 있다.
+
+Phase Error Detector의 출력 신호 $e_D[n]$은 루프 필터의 입력 신호로 들어간다. 루프필터를 거치고 나온 신호는 아래와 같이 표현된다.
+
+![Internal link preview tooltip](/images/content/PLL/pic19.png)
+
+그림에서 알 수 있듯이 신호의 피크 투 피크 값이 1에서 0.3으로 감소했음을 알 수 있다.
+
+이 뜻은 PLL이 저역통과 필터의 특성을 띠기 때문에 고주파 성분이 감쇠됐기 때문이다.
+
+루프 필터를 거치고 나온 신호의 위상 추적 결과를 살펴보면 아래와 같다.
+
+![Internal link preview tooltip](/images/content/PLL/pi20.png)
+
+초기 위상 오차 $\pi$를 잘 추적했음을 알 수 있다. 그러나 $\pi$를 기준으로 조금씩 진동하고 있다. 이 이유는 Phase Error Detector에서 나온 이중 주파수 성분에 의한 떨림이다.
+
+마지막으로 최종 PLL의 출력 신호에 대해 알아보자.
+
+NCO의 Q신호는 위상 오차를 계산하기 위해 Phase Error Detector로 보내졌다. 반면 NCO의 I신호는 PLL의 최종 출력이 된다.
+
+아래 그림을 통해 PLL의 출력 신호가 점차 입력 신호와 같아짐을 확인할 수 있다.
+
+![Internal link preview tooltip](/images/content/PLL/pic21.png)
+
+아래 그림은 PLL의 입력신호가 복소 신호일 때의 구조이다. PLL 입력 신호가 실수 신호일 때와 구조가 거의 비슷하지만 Phase Error Detector에서 약간의 차이를 보인다.
+
+![Internal link preview tooltip](/images/content/PLL/pic24.png)
+
+### 4.7 Complex PLL Matlab 구현
+이제 MATLAB으로 PLL을 구현해보자.
+
+Phase Noise가 있는 Complex 신호를 PLL의 입력신호로 넣고 PLL이 어떻게 위상을 따라가는지 살펴보자.
+
+먼저 MATLAB 코드는 아래와 같다.
+
+```verilog
+close all; clear all;
+
+%% PLL Simulation parameter
+debug           = 1;
+pll_iteration   = 2e4;
+pn_var          = 1e-9; % Phase noise variance
+Kd              = 0.5;
+BnTs            = 0.05;
+K0              = 1;
+zeta            = 1/sqrt(2);     % Damping factor
+theta           = BnTs/(zeta + 1/(4*zeta));
+Kp              = 1/(Kd*K0) * (4*zeta*theta^2)/(1+2*zeta*theta+theta^2);
+Ki              = 1/(Kd*K0) * (4*theta^2)/(1+2*zeta*theta+theta^2);
+
+%% Generate Input Complex Signal
+fs              = 1e6;
+f0              = 1e3;
+y_ppm           = 50;
+y               = y_ppm * 1e-6;
+foffset         = y * f0;
+
+phase_noise = sqrt(pn_var) * randn(pll_iteration,1);
+delta_phi_in = 2 * pi * (f0 + foffset)/fs;
+phase = (0:pll_iteration-1).'* delta_phi_in + phase_noise;
+pll_in = exp(1j * phase);
+
+%% PLL Ioop Initialization
+pd_comp      = zeros(pll_iteration, 1);
+pd_err       = zeros(pll_iteration, 1);
+lf_kp_out    = zeros(pll_iteration, 1);
+lf_ki_out    = zeros(pll_iteration, 1);
+lf_out       = zeros(pll_iteration, 1);
+dds_out      = zeros(pll_iteration, 1);
+pd_in        = zeros(pll_iteration, 1);
+pd_conjugate = zeros(pll_iteration, 1);
+pll_out      = zeros(pll_iteration, 1);
+
+lf_ki_init = 0;
+dds_out_init = pi;
+
+for i = 1 : pll_iteration
+    %% Phase Error Detector
+    if(i == 1)
+        pd_in(i) = exp(1j*dds_out_init);
+    else
+        pd_in(i) = exp(1j*dds_out(i-1));
+    end
+    
+    % Conjugate
+    pd_conjugate(i) = conj(pd_in(i));
+    
+    % Phase Compensate
+    pd_comp(i) = pll_in(i) * pd_conjugate(i);
+    
+    % Phase Detector Error
+    pd_err(i) = angle(pd_comp(i));
+    
+    %% Loop Filter
+    % Proportional Controller
+    lf_kp_out(i) = Kp * pd_err(i);
+    
+    % Integrator Controller
+    if(i == 1)
+        lf_ki_out(i) = Ki * pd_err(i) + lf_ki_init;
+    else
+        lf_ki_out(i) = Ki * pd_err(i) + lf_ki_out(i-1);
+    end
+    
+    % Loop Filter Out
+    lf_out(i) = lf_kp_out(i) + lf_ki_out(i);
+    
+    %% DDS
+    f_target = 2*pi*f0/fs;
+    
+    if(i == 1)
+        dds_out(i) = lf_out(i) + f_target + dds_out_init;
+    else
+        dds_out(i) = lf_out(i) + f_target + dds_out(i-1);
+    end
+    pll_out(i) = exp(1j*dds_out(i));
+end
+
+```
+
+코드를 천천히 분석해보자.
+
+### 4.7.1 ppm오차와 위상 잡음이 있는 PLL 입력신호
+
+먼저 위상 잡음이 껴있는 신호를 만드는 방법에 대해 알아보자.
+
+그러기 위해서는 ppm(parts-per-million)에 대해 알아야 한다.
+
+1ppm은 기준 주파수 대비 1/1e6(백만) 이내의 오차가 있다는 뜻이다.
+
+예를 들어 PLL에 100MHz의 기준 주파수를 갖고 50ppm의 오차를 갖는 입력 신호를 넣는다고 가정해보면
+
+$$100MHz \times \frac{50}{1000000} = 5000Hz$$
+
+따라서 입력 신호는 100~100.005MHz의 이내에서 주파수가 흔들리는 신호임을 알 수 있다.
+
+MATLAB 코드 20Line에서 foffset = y_ppm * 1e-6 * fo로 구하는식이 위에서 언급한 식과 동일하다.
+
+따라서 코드에서 foffset은 기준 주파수가 갖는 오차를 의미하기 때문에 delta_phi_in 부분에서 주파수 부분에 f0+foffset을 통해 ppm오차를 반영할 수 있다.
+
+그리고 이산 시간 정현파 신호는 $exp(1j2 \pi f_c/f_s)$로 표헌 가능하고 $2 \pi f_c/fs$는 정현파의 위상을 나타낸다.
+
+따라서 MATLAB 23Line처럼 ppm을 반영한 PLL 입력 신호의 위상을 나타낼 수 있다.
+
+이제 위상 잡음을 추가할 차례다. 22 Line에서 위상 랜덤 잡음을 추가하여 delta_phi_in과 더해주면 24 Line에서 ppm오차와 랜덤 위상 잡음이 포함된 최종 PLL입력신호의 위상을 표현할 수 있다.
+
+이제 정현파 신호의 표현식 $exp(1j*위상)$식을 활용해 25 Line처럼 표현하여 PLL 입력신호를 나타낼 수 있다.
+
+### 4.7.2 Digital PLL
+
+이해를 위해 코드에서 나타낸 부분을 그림에 같이 표현했다. 아래 그림을 참고해보자.
+
+![Internal link preview tooltip](/images/content/PLL/pic25.png)
+
+그림에서 매핑된 변수와 코드부분을 따라가보면 블록다이어그램이 어떻게 코드로 표현됐는지 확인할 수 있다.
+
+### 4.7.3 결과
+
+![Internal link preview tooltip](/images/content/PLL/pic26.png)
+
+위 그림은 PLL의 결과다. 빨간색 신호는 PLL의 출력신호다. 파란색 신호는 위상 잡음과 ppm이 포함된 입력 신호다.
+
+시간이 지나면서 PLL의 출력신호인 빨간색 신호가 PLL의 입력신호인 파란색 신호를 잘 따라가는 것을 확인할 수 있다.
